@@ -10,3 +10,11 @@ sudo ln -s /usr/bin/nodejs /usr/local/bin/node
 
 
 nodemon ./ws.js
+
+
+
+pour tester :
+http://127.0.0.1:8080/screen_shoot/url=urlencodedurl
+
+ex:
+http://85.169.64.54:8080/screen_shoot/url=http%3A%2F%2Fwww.leboncoin.fr%2Fventes_immobilieres%2F708072402.htm%3Fca%3D21_s
