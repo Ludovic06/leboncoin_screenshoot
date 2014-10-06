@@ -21,7 +21,9 @@ http://85.169.64.54:8080/screen_shoot/url=http%3A%2F%2Fwww.leboncoin.fr%2Fventes
 
 
 
-
+OS :
+http://linux-sunxi.org/Sunxi-tools
+http://thinkonbytes.blogspot.fr/2013/11/how-install-ubuntu-into-cubieboard-and.html
 
 Pour phantomjs :
 pour l'erreur :
