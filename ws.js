@@ -1,4 +1,4 @@
-var spawn = require('child_process').spawn;
+
 
 function phantomjs(file_url) {
 
@@ -8,7 +8,10 @@ function phantomjs(file_url) {
 //    var file = fs.createWriteStream(DOWNLOAD_DIR + file_name);
     // execute curl using child_process' spawn function
 //    var curl = spawn('curl', [file_url]);
+console.log("spawning phantomjs");
+var spawn = require('child_process').spawn;
     var curl = spawn('phantomjs /home/linaro/lbc_sshoot/lbc.js', file_url);
+console.log("spawned");
     // add a 'data' event listener for the spawn instance
  //   curl.stdout.on('data', function(data) { file.write(data); });
     // add an 'end' event listener to close the writeable stream
