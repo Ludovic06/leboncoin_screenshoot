@@ -24,6 +24,21 @@ http://85.169.64.54:8080/screen_shoot/url=http%3A%2F%2Fwww.leboncoin.fr%2Fventes
 
 
 Pour phantomjs :
+
+apt-get update
+apt-get install phantomjs
+
+
+sinon 
+
+wget https://launchpad.net/ubuntu/+source/phantomjs/1.4.0+dfsg-1/+build/3077541/+files/phantomjs_1.4.0%2Bdfsg-1_armhf.deb
+
+sudo apt-get install libqtwebkit
+sudo dpkg -i phantomjs*.deb
+
+
+
+
 pour l'erreur :
  [WARNING] phantomjs: cannot connect to X server
 il faut une version de phantomjs > 1.4

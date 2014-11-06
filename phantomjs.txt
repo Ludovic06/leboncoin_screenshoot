@@ -1,0 +1,103 @@
+===================
+= phantomjs 1.4 : =
+=================== 
+apt-get update
+apt-get install phantomjs
+
+
+sinon 
+
+wget https://launchpad.net/ubuntu/+source/phantomjs/1.4.0+dfsg-1/+build/3077541/+files/phantomjs_1.4.0%2Bdfsg-1_armhf.deb
+
+sudo apt-get install libqtwebkit
+sudo dpkg -i phantomjs*.deb
+
+
+
+sudo apt-get install Xvfb
+
+sinon il faut install xvbf
+xhost local:root
+
+
+============================
+= phantomjs 1.9 : download =
+============================
+
+
+wget https://github.com/aeberhardo/phantomjs-linux-armv6l/archive/master.zip
+unzip master.zip
+cd phantomjs-linux-armv6l-master
+bunzip2 *.bz2 && tar xf *.tar
+
+pour valider le binaire :
+./phantomjs-1.9.0-linux-armv6l/bin/phantomjs --version
+1.9.0
+
+
+============================
+= phantomjs 1.9 : compil   =
+============================
+
+sudo apt-get update
+
+sudo apt-get install build-essential chrpath git-core libssl-dev libfontconfig1-dev
+sudo apt-get install build-essential chrpath git-core libssl-dev libfontconfig1-dev libxft-dev
+sudo apt-get install libx11-dev libxext-dev
+
+git clone git://github.com/ariya/phantomjs.git
+cd phantomjs
+git checkout 1.9
+
+mkdir src/qt/src/3rdparty/pixman && pushd src/qt/src/3rdparty/pixman && curl -O http://qt.gitorious.org/qt/qt/blobs/raw/4.8/src/3rdparty/pixman/README && curl -O http://qt.gitorious.org/qt/qt/blobs/raw/4.8/src/3rdparty/pixman/pixman-arm-neon-asm.h && curl -O http://qt.gitorious.org/qt/qt/blobs/raw/4.8/src/3rdparty/pixman/pixman-arm-neon-asm.S; popd
+
+dans le cas de log de build : 
+/usr/bin/ld: cannot find -lXext
+/usr/bin/ld: cannot find -lX11
+/usr/bin/ld: cannot find -lXext
+/usr/bin/ld: cannot find -lX11
+/usr/bin/ld: cannot find -lQtWebKit
+/usr/bin/ld: cannot find -lQtGui
+
+
+
+
+mettre à jour "ld.so.cache" avec la commande 
+ldconfig
+
+vi build.sh 
+delete line 11-30
+vi ./src/qt/preconfig.sh
+line 31 add : 
+QT_CFG+=' -no-pch'
+
+
+nohup ./build.sh --confirm > build.sh.out 2> build.sh.err &
+
+tail -f build.sh*
+
+pour voir les erreurs :
+grep "cannot find " build.sh.err
+
+./deploy/package.sh
+
+tarball dans :
+./deploy
+
+
+
+++++++++++++++++++++++++++
++ finitions (1.4, 1.9) : +
+++++++++++++++++++++++++++
+
+cd /usr/share
+sudo mv fonts fonts.bak
+sudo mkdir fonts
+sudo apt-get install --reinstall ttf-mscorefonts-installer
+sudo rm /usr/share/fonts/truetype/msttcorefonts/andalemo.ttf
+sudo rm /usr/share/fonts/truetype/msttcorefonts/Andale_Mono.ttf
+sudo fc-cache -rv
+
+
+sudo apt-get install curl
+
