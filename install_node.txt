@@ -3,6 +3,7 @@ sudo npm config set registry http://registry.npmjs.org/
 sudo npm install express
 sudo npm install body-parser
 sudo npm install mkdirp
+sudo npm install supervisor -g
 
 sudo npm install -g nodemon
 sudo vi /usr/local/lib/node_modules/nodemon/bin/nodemon.js
