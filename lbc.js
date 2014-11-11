@@ -72,8 +72,8 @@ function getref(url){
 
 
 function save_to_pic_and_exit(page, id_annonce){
-    page.render(id_annonce +".png");
-    page.render(id_annonce +".pdf");
+    page.render("/home/ludovic/lbc_sshoot/screenshooted_urls/"+id_annonce +".png");
+    page.render("/home/ludovic/lbc_sshoot/screenshooted_urls/"+id_annonce +".pdf");
     console.log("saved to file : " + id_annonce + ".png");
     phantom.exit();
 }
@@ -143,7 +143,7 @@ function goto_lbc(url, id_annonce){
         if ('success' !== status) {
             console.log("Error");
         } else {
-            console.log("Page exists ! Simulate the click (prout):");
+            console.log("Page exists, saving it to png and pdf.");
 
 
 // PUB OFF
