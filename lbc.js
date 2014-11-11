@@ -1,11 +1,12 @@
 
-//location friendly
+ //location friendly
 // new LBC design
 // no pub and no parasite menu !
 // pdf
 // ville in filename
+// seloger special function
 
-//1.2.4
+//1.2.3.1
 
 function waitFor ($config) {
     $config._start = $config._start || new Date();
@@ -58,11 +59,12 @@ function getref(url){
         //console.log( "split ref : " + url.split("leboncoin.fr/ventes_immobilieres/")[1].split(".")[0])
     }
     else if (url.indexOf("seloger") !=-1){
-//        console.log("ludo4");
+        console.log("seloger");
         var tempref=url.split("/");
-        console.log("ludo_ref = " + tempref[tempref.length - 1].split(".")[0]);
+        console.log("seloger_find_ref = " + tempref[tempref.length - 1].split(".")[0]);
         ref_ad = tempref[tempref.length - 1].split(".")[0];
-        goto_other(url, ref_ad)
+        //goto_other(url, ref_ad)
+        goto_seloger(url,ref_ad);
     }
     else {
         console.log("unrecognized url : " + url);
@@ -85,9 +87,9 @@ function goto_other(url, id_annonce){
         width: 1280,
         height: 800
     };
-
+    console.log("curling page : " + url);
      page.open(url, function (status) {
-        console.log("toto")
+        console.log("page curled : ");
         if ('success' !== status) {
             console.log("Error");
         } else {
@@ -99,11 +101,9 @@ function goto_other(url, id_annonce){
     phantom.exit()
 }
 
-function goto_lbc(url, id_annonce){
+function goto_seloger(url, id_annonce){
     var page = new WebPage();
     var ville = "";
-
-
     page.viewportSize = {
         width: 1280,
         height: 800
@@ -113,7 +113,37 @@ function goto_lbc(url, id_annonce){
     format        : "A4",
     orientation    : "portrait",
     margin        : { left:"1cm", right:"1cm", top:"1cm", bottom:"1cm" }
-};
+    };
+
+    console.log("curling page : " + url);
+    console.log("ref ad seloger : " + id_annonce);
+
+    page.open(url, function (status) {
+        //console.log("page curled ");
+    //    if ('success' !== status) {
+     //       console.log("Error loading page : " + url);
+
+       // } else {
+            //console.log("Page ok to save");
+            save_to_pic_and_exit(page, "seloger"+"_"+id_annonce);
+        //}
+    });
+}
+
+
+function goto_lbc(url, id_annonce){
+    var page = new WebPage();
+    var ville = "";
+    page.viewportSize = {
+        width: 1280,
+        height: 800
+    };
+
+    page.paperSize = {
+    format        : "A4",
+    orientation    : "portrait",
+    margin        : { left:"1cm", right:"1cm", top:"1cm", bottom:"1cm" }
+    };
 
 
     page.open(url, function (status) {

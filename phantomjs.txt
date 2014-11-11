@@ -40,12 +40,24 @@ pour valider le binaire :
 ============================
 
 sudo apt-get update
+
 sudo apt-get install build-essential chrpath git-core libssl-dev libfontconfig1-dev
+
+
+sudo apt-get install build-essential chrpath git-core libssl-dev libfontconfig1-dev
+sudo apt-get install build-essential chrpath git-core libssl-dev libfontconfig1-dev libxft-dev
+sudo apt-get install libx11-dev libxext-dev
+
+
 git clone git://github.com/ariya/phantomjs.git
 cd phantomjs
 git checkout 1.9
 
 mkdir src/qt/src/3rdparty/pixman && pushd src/qt/src/3rdparty/pixman && curl -O http://qt.gitorious.org/qt/qt/blobs/raw/4.8/src/3rdparty/pixman/README && curl -O http://qt.gitorious.org/qt/qt/blobs/raw/4.8/src/3rdparty/pixman/pixman-arm-neon-asm.h && curl -O http://qt.gitorious.org/qt/qt/blobs/raw/4.8/src/3rdparty/pixman/pixman-arm-neon-asm.S; popd
+
+
+
+dans le cas de log de build : 
 
 /usr/bin/ld: cannot find -lXext
 /usr/bin/ld: cannot find -lX11
@@ -54,7 +66,11 @@ mkdir src/qt/src/3rdparty/pixman && pushd src/qt/src/3rdparty/pixman && curl -O 
 /usr/bin/ld: cannot find -lQtWebKit
 /usr/bin/ld: cannot find -lQtGui
 
+
 sudo apt-get install libx11-dev libxext-dev
+
+
+
 
 
 mettre à jour "ld.so.cache" avec la commande 
