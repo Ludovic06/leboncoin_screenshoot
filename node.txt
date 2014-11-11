@@ -30,7 +30,14 @@ pour l'erreur :
  [WARNING] phantomjs: cannot connect to X server
 il faut une version de phantomjs > 1.4
 sinon il faut install xvbf
-xhost local:root
+ssh linaro@IP -X
+
+ajout des locales: 
+sudo apt-get install language-pack-en-base
+sudo dpkg-reconfigure locales
+locale -a
+
+
 
 pour le ~/.bashrc :
  parse_git_branch() {
