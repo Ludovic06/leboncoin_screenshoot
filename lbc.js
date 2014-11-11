@@ -39,12 +39,10 @@ function click(el){
     el.dispatchEvent(ev);
 }
 
-
 function getref(url){
 //    console.log("ludo2");
     var ref_ad;
     if (url.indexOf("leboncoin") !=-1){
-        console.log("ludo3");
         if (url.indexOf("vente") !=-1){
             ref_ad = url.split("leboncoin.fr/ventes_immobilieres/")[1].split(".")[0];
         }
@@ -87,17 +85,18 @@ function goto_other(url, id_annonce){
         width: 1280,
         height: 800
     };
-    console.log("curling page : " + url);
+    console.log("getting page : " + url);
+     page.settings.userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.64 Safari/537.4';
      page.open(url, function (status) {
         console.log("page curled : ");
         if ('success' !== status) {
-            console.log("Error");
+            console.log("Load page error");
         } else {
-            console.log("Page exists ! Simulate the click (prout):");
+            console.log("Page exists !:");
             save_to_pic_and_exit(page, id_annonce)
         }
      });
-    console.log("by")
+    console.log("bye bye")
     phantom.exit()
 }
 
@@ -117,16 +116,9 @@ function goto_seloger(url, id_annonce){
 
     console.log("curling page : " + url);
     console.log("ref ad seloger : " + id_annonce);
-
+    page.settings.userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.64 Safari/537.4';
     page.open(url, function (status) {
-        //console.log("page curled ");
-    //    if ('success' !== status) {
-     //       console.log("Error loading page : " + url);
-
-       // } else {
-            //console.log("Page ok to save");
-            save_to_pic_and_exit(page, "seloger"+"_"+id_annonce);
-        //}
+    save_to_pic_and_exit(page, "seloger"+"_"+id_annonce);
     });
 }
 
@@ -145,7 +137,7 @@ function goto_lbc(url, id_annonce){
     margin        : { left:"1cm", right:"1cm", top:"1cm", bottom:"1cm" }
     };
 
-
+    page.settings.userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.64 Safari/537.4';
     page.open(url, function (status) {
 
         if ('success' !== status) {
@@ -184,10 +176,11 @@ function goto_lbc(url, id_annonce){
             });
 
             if(elem){
-                console.log("#phoneNumber OK")
+                console.log("#phoneNumber present : OK")
             }else {
-                console.log("#phoneNumber NOK")
-                save_to_pic_and_exit(page,id_annonce);
+                console.log("#phoneNumber present : NOK")
+		save_to_pic_and_exit(page, ville+"_"+id_annonce);
+//                save_to_pic_and_exit(page,id_annonce);
             }
 
 
@@ -195,6 +188,7 @@ function goto_lbc(url, id_annonce){
             return $('#phoneNumber > a').offset();
         });
 
+	console.log("getting phone picture");
         // first click for phone number then wait for phone picture
         page.sendEvent('click', offset.left , offset.top );
 
@@ -213,11 +207,11 @@ function goto_lbc(url, id_annonce){
                             return phonenumberisvisible ;
                         });
 
-                    console.log("waitfor invoke check:", check);
+                    console.log("waitfor  phone picture check:", check);
                     return check;
                 },
                 success : function () {
-                    console.log("waitfor invoke success");
+                    console.log("waitfor phone picture success");
 
                     setTimeout(function(){
                         save_to_pic_and_exit(page, ville+"_"+id_annonce);
@@ -225,7 +219,8 @@ function goto_lbc(url, id_annonce){
 
                 },
                 error : function () {
-                    console.log("waitfor invoke error");
+                    console.log("waitfor phone picture eerror");
+		    save_to_pic_and_exit(page, ville+"_"+id_annonce+"___phone_error");
                     phantom.exit();
                 }
             });
