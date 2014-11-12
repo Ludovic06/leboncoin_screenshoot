@@ -54,7 +54,6 @@ function getref(url){
             phantom.exit();
         }
         goto_lbc(url,ref_ad)
-        //console.log( "split ref : " + url.split("leboncoin.fr/ventes_immobilieres/")[1].split(".")[0])
     }
     else if (url.indexOf("seloger") !=-1){
         console.log("seloger");
