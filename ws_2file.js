@@ -17,6 +17,7 @@ fs.appendFile('./url2screenshoot/incoming/url.list', file_url+"\n", function (er
 var express = require('express');
 var bodyParser = require('body-parser')
 var app = express();
+var fss = require('fs');
 
 setup();
  
@@ -28,9 +29,14 @@ app.use(bodyParser.urlencoded({
 app.get('/screen_shoot/:url', function(req, res) {
 	var url = req.params.url;
 	var now = new Date();
-//	var now4console = now.getFullYear()+"-"+now.getMonth()+"-"+now.getDate()+":"+now.getHours+":"+(now.getMinutes()<10?'0':'')+now.getMinutes()+":"+(now.getSeconds()?<10?'0':'')+now.getSeconds();
 	var now4console = now.getFullYear()+"-"+now.getMonth()+"-"+now.getDate()+":"+("0" + now.getHours()).substr(-2)+":"+("0"+now.getMinutes()).substr(-2)+":"+("0" + now.getSeconds()).substr(-2)
 	console.log(now4console + " --- Screen Shoot ask for :" + url);
+	fss.appendFile('./history.ws', now4console + " --- Screen Shoot ask for :" + url+"\n", function (err) {
+	if(err) {
+		console.log(err);
+	}
+});
+
 	var url2 = url.split("=")[1];
 	addurlifile(url2);
 	res.send('url : ' + url2 + ' saved as ' + ' !'); 
