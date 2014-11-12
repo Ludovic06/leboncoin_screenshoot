@@ -202,7 +202,7 @@ function goto_lbc(url, id_annonce){
 
             waitFor({
                 debug: true,  // optional
-                interval: 100,  // optional
+                interval: 200,  // optional
                 timeout: 1000,  // optional
                 check : function () {
                     var check = page.evaluate(function () {
