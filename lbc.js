@@ -71,10 +71,20 @@ function getref(url){
 }
 
 
-function save_to_pic_and_exit(page, id_annonce){
-    page.render("/home/ludovic/lbc_sshoot/screenshooted_urls/"+id_annonce +".png");
-    page.render("/home/ludovic/lbc_sshoot/screenshooted_urls/"+id_annonce +".pdf");
-    console.log("saved to file : " + id_annonce + ".png");
+function save_to_pic_and_exit(page, id_annonce, city){
+	if ( typeof(city) == "undefined"){
+		var city="vrac";
+	}
+	var path="/home/ludovic/lbc_sshoot/screenshooted_urls/"+city+"/";
+	var fs = require('fs');
+	var wasSuccessful = fs.makeDirectory(path);
+	var now = new Date();
+	var today = now.getFullYear()+""+now.getMonth()+""+now.getDate();
+//    page.render("/home/ludovic/lbc_sshoot/screenshooted_urls/"+id_annonce +".png");
+//    page.render("/home/ludovic/lbc_sshoot/screenshooted_urls/"+id_annonce +".pdf");
+	page.render(path+id_annonce+"_"+today+".png");
+	page.render(path+id_annonce+"_"+today+".pdf");
+    console.log("saved to file : " + id_annonce +"_"+today+ ".png");
     phantom.exit();
 }
 
@@ -179,8 +189,7 @@ function goto_lbc(url, id_annonce){
                 console.log("#phoneNumber present : OK")
             }else {
                 console.log("#phoneNumber present : NOK")
-		save_to_pic_and_exit(page, ville+"_"+id_annonce);
-//                save_to_pic_and_exit(page,id_annonce);
+		save_to_pic_and_exit(page, ville+"_"+id_annonce, ville);
             }
 
 
@@ -214,13 +223,13 @@ function goto_lbc(url, id_annonce){
                     console.log("waitfor phone picture success");
 
                     setTimeout(function(){
-                        save_to_pic_and_exit(page, ville+"_"+id_annonce);
+                        save_to_pic_and_exit(page, ville+"_"+id_annonce, ville);
                     },1);
 
                 },
                 error : function () {
                     console.log("waitfor phone picture eerror");
-		    save_to_pic_and_exit(page, ville+"_"+id_annonce+"___phone_error");
+		    save_to_pic_and_exit(page, ville+"_"+id_annonce+"___phone_error", ville);
                     phantom.exit();
                 }
             });
