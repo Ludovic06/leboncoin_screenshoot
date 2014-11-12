@@ -27,7 +27,10 @@ app.use(bodyParser.urlencoded({
 
 app.get('/screen_shoot/:url', function(req, res) {
 	var url = req.params.url;
-	console.log("Screen Shoot ask for :" + url);
+	var now = new Date();
+//	var now4console = now.getFullYear()+"-"+now.getMonth()+"-"+now.getDate()+":"+now.getHours+":"+(now.getMinutes()<10?'0':'')+now.getMinutes()+":"+(now.getSeconds()?<10?'0':'')+now.getSeconds();
+	var now4console = now.getFullYear()+"-"+now.getMonth()+"-"+now.getDate()+":"+("0" + now.getHours()).substr(-2)+":"+("0"+now.getMinutes()).substr(-2)+":"+("0" + now.getSeconds()).substr(-2)
+	console.log(now4console + " --- Screen Shoot ask for :" + url);
 	var url2 = url.split("=")[1];
 	addurlifile(url2);
 	res.send('url : ' + url2 + ' saved as ' + ' !'); 
