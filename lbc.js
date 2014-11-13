@@ -70,11 +70,17 @@ function getref(url){
 }
 
 
-function save_to_pic_and_exit(page, id_annonce, city){
+function save_to_pic_and_exit(page, id_annonce, city, islocation){
 	if ( typeof(city) == "undefined"){
 		var city="vrac";
 	}
-	var path="/home/ludovic/lbc_sshoot/screenshooted_urls/"+city+"/";
+	var path="";
+	if ( islocation == ""){
+		path="/home/ludovic/lbc_sshoot/screenshooted_urls/"+city+"/";
+	}
+	else {
+		path="/home/ludovic/lbc_sshoot/screenshooted_urls/location/"+city+"/";
+	}
 	var fs = require('fs');
 	var wasSuccessful = fs.makeDirectory(path);
 	var now = new Date();
@@ -135,6 +141,11 @@ function goto_seloger(url, id_annonce){
 function goto_lbc(url, id_annonce){
     var page = new WebPage();
     var ville = "";
+    var islocation = "";
+    if (url.indexOf("location") !=-1){
+	islocation = "location";
+    } 
+
     page.viewportSize = {
         width: 1280,
         height: 800
@@ -188,7 +199,7 @@ function goto_lbc(url, id_annonce){
                 console.log("#phoneNumber present : OK")
             }else {
                 console.log("#phoneNumber present : NOK")
-		save_to_pic_and_exit(page, ville+"_"+id_annonce, ville);
+		save_to_pic_and_exit(page, ville+"_"+id_annonce, ville, islocation);
             }
 
 
@@ -222,13 +233,13 @@ function goto_lbc(url, id_annonce){
                     console.log("waitfor phone picture success");
 
                     setTimeout(function(){
-                        save_to_pic_and_exit(page, ville+"_"+id_annonce, ville);
+                        save_to_pic_and_exit(page, ville+"_"+id_annonce, ville, islocation);
                     },1);
 
                 },
                 error : function () {
                     console.log("waitfor phone picture eerror");
-		    save_to_pic_and_exit(page, ville+"_"+id_annonce+"___phone_error", ville);
+		    save_to_pic_and_exit(page, ville+"_"+id_annonce+"___phone_error", ville, islocation);
                     phantom.exit();
                 }
             });
