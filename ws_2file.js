@@ -42,6 +42,10 @@ app.get('/screen_shoot/:url', function(req, res) {
 	res.send('url : ' + url2 + ' saved as ' + ' !'); 
 });
 
+app.get('/about', function(req,res) {
+	res.send('ok');
+});
+
 app.get('/', function(req,res) {
 	res.send('Bad Request !');
 });
