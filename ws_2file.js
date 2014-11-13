@@ -39,7 +39,8 @@ app.get('/screen_shoot/:url', function(req, res) {
 
 	var url2 = url.split("=")[1];
 	addurlifile(url2);
-	res.send('url : ' + url2 + ' saved as ' + ' !'); 
+	//res.send('url : ' + url2 + ' saved as ' + ' !'); 
+	res.send('ok');
 });
 
 app.get('/about', function(req,res) {

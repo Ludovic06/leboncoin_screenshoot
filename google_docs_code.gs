@@ -118,7 +118,7 @@ function lbc(sendMail){
       }
 //      Browser.msgBox("tel maison");
       call_node(urls);
-//      Browser.msgBox("fin tel maison");
+      //Browser.msgBox("fin tel maison");
       debug_("Nb mail journalier restant : " + MailApp.getRemainingDailyQuota());
     }
   }
@@ -126,9 +126,26 @@ function lbc(sendMail){
 
 //telephone maison et phantomjs
 function call_node(urls){
-  for( var i in urls){
-     var response = UrlFetchApp.fetch("http://85.170.234.122:8080/screen_shoot/url=" + urls[i]);
-      //Browser.msgBox("http://85.170.234.122:8080/screen_shoot/url="+encodeURIComponent(urls[i]));
+  var home = test_home_ip();
+  var home_pub_ip = ScriptProperties.getProperty('home_pub_ip');
+  if ( home ) {
+    for( var i in urls){
+       var response = UrlFetchApp.fetch("http://"+home_pub_ip+":8080/screen_shoot/url=" + urls[i]);
+        //Browser.msgBox("http://85.169.66.207:8080/screen_shoot/url="+encodeURIComponent(urls[i]));
+    }
+  }
+  else {
+      //Browser.msgBox("no server : " + urls.length); //731988774
+      var sss = SpreadsheetApp.getActiveSpreadsheet();
+      var sheet_catchup = sss.getSheetByName("catchup");
+      //Browser.msgBox(urls[0]);
+      for( var i in urls){
+        //Browser.msgBox("iter : " + i);
+        sheet_catchup.insertRowBefore(2);
+        sheet_catchup.getRange("A2").setValue(urls[i]);
+        //Browser.msgBox(urls[i]);
+      }
+      //Browser.msgBox("no server fin");
   }
 }
 
@@ -333,3 +350,80 @@ Browser.msgBox(msg);
 }
 }
 
+
+/**
+get pub ip in gmail
+**/
+function get_pub_ip() {
+var home_pub_ip = "127.0.0.1"
+var threads = GmailApp.search('is:unread subject:"ip" from:"ludovic.sterling@gmail.com" to:"ludovic.sterling@gmail.com" after:2014/11/10 ', 0, 1);
+
+/* just to read alls returned mails thread
+for (var i in threads){  
+  var messages_in_thread = threads[i].getMessages();
+  for (var j in messages_in_thread){
+      Browser.msgBox(messages_in_thread[j].getBody().split('<br />')[0]);      
+      }
+  }
+ */
+ 
+ //Browser.msgBox("nb threads : " +threads.length);
+ if ( threads.length > 0) {
+  for (var i in threads){  
+    var messages_in_thread = threads[i].getMessages();
+      ScriptProperties.setProperty('home_pub_ip', messages_in_thread[0].getBody().split('<br />')[0]);
+      //Browser.msgBox(messages_in_thread[0].getDate());
+   //var home_pub_ip = ScriptProperties.getProperty('home_pub_ip');
+   }
+  //Browser.msgBox("home ip " +home_pub_ip);
+  }
+  
+//Browser.msgBox("prop ip " +ScriptProperties.getProperty('home_pub_ip'));
+}
+
+
+function test_home_ip(){
+  var home_pub_ip = ScriptProperties.getProperty('home_pub_ip');
+  var response = UrlFetchApp.fetch("http://"+home_pub_ip+":8080/about").getContentText("UTF-8");
+  if ( response == "ok" ) {return true;}
+  else { return false; }
+}
+
+//inutile àirer
+function test_insert(){
+      Browser.msgBox("no server");
+      var ss = SpreadsheetApp.getActiveSpreadsheet();
+      var sheet_catchup = ss.getSheetByName("catchup");
+      var toto = "http://www.leboncoin.fr/ventes_immobilieres/668223025.htm";
+
+        sheet_catchup.insertRowBefore(2);
+        sheet_catchup.getRange("A2").setValue(toto);
+//        Browser.msgBox(urls[i]);
+      
+      Browser.msgBox("no server fin");
+}
+
+function go_catchup(){
+  var home = test_home_ip();
+
+  if ( home ) {
+      var ss = SpreadsheetApp.getActiveSpreadsheet();
+      var sheet_catchup = ss.getSheetByName("catchup");
+      var url = "";
+      var i = 0;
+      home_pub_ip = ScriptProperties.getProperty('home_pub_ip');
+      
+      while((url = sheet_catchup.getRange(2+i,1).getValue()) != ""){
+        var response = UrlFetchApp.fetch("http://"+home_pub_ip+":8080/screen_shoot/url=" + url);
+        if ( response == "ok" ) {
+          sheet_catchup.deleteRow(2+i);
+        }        
+        else { 
+          i++;        
+        }        
+      }  
+  }
+  else {
+      Browser.msgBox("no server : " + ScriptProperties.getProperty('home_pub_ip') + " please try later");      
+  }
+}
