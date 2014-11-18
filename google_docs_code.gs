@@ -7,7 +7,7 @@ var menuLabel = "Lbc Alertes";
 var menuMailSetupLabel = "Setup email";
 var menuSearchSetupLabel = "Setup recherche";
 var menuSearchLabel = "Lancer manuellement";
-var menuLog = "Activer/Déctiver les logs";
+var menuLog = "Activer/Désactiver les logs";
 var menuArchiveLog = "Archiver les logs";
 var email2 = "anne.pierron@gmail.com";
 //var list_url;
@@ -25,10 +25,10 @@ function lbc(sendMail){
   
   var urls = [];
   if(to == "" || to == null ){
-    Browser.msgBox("L'email du destinataire n'est pas dénit. Allez dans le menu \"" + menuLabel + "\" puis \"" + menuMailSetupLabel + "\".");
+    Browser.msgBox("L'email du destinataire n'est pas définit. Allez dans le menu \"" + menuLabel + "\" puis \"" + menuMailSetupLabel + "\".");
   } else {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheetByName("Donné");
+    var sheet = ss.getSheetByName("Données");
     var slog = ss.getSheetByName("Log");
     var i = 0; var nbSearchWithRes = 0; var nbResTot = 0;
     var body = ""; var corps = ""; var bodyHTML = ""; var corpsHTML = ""; var menu = ""; var searchURL = ""; var searchName = "";
@@ -42,7 +42,7 @@ function lbc(sendMail){
       stop = false;
       var rep = UrlFetchApp.fetch(searchURL).getContentText("iso-8859-15");
       if(rep.indexOf("Aucune annonce") < 0){
-        //LBC àes réltats
+        //LBC à des résultats
         var data = splitResult_(rep);
         data = data.substring(data.indexOf("<a"));
         var firsta = extractA_(data);
@@ -88,15 +88,15 @@ function lbc(sendMail){
         sheet.getRange(2+i,3).setValue(extractId_(firsta));
         nbResTot += nbRes;
       } else {
-        //pas de réltat
+        //pas de résultat
         sheet.getRange(2+i,3).setValue(123);
       }
       i++;
     }
     
     if(nbSearchWithRes > 1) {
-      //plusieurs recherche, on créun menu
-      menu = "<p style=\"display:block;clear:both;padding-top:20px;font-size:14px;\">Accèrapide :</p><ul>" + menu + "</ul>";
+      //plusieurs recherche, on créé un menu
+      menu = "<p style=\"display:block;clear:both;padding-top:20px;font-size:14px;\">Accès rapide :</p><ul>" + menu + "</ul>";
       //corps = menu + corps;
       corpsHTML = menu + corpsHTML;
       debug_(menu);
@@ -105,9 +105,9 @@ function lbc(sendMail){
     debug_("Nb de res tot:" + nbResTot);
     //on envoie le mail?
     if(corps != ""){
-      var title = "LBC-alert : " + nbResTot + " nouveau" + (nbResTot>1?"x":"") + " réltat" + (nbResTot>1?"s":"");
+      var title = "LBC-alert : " + nbResTot + " nouveau" + (nbResTot>1?"x":"") + " résultat" + (nbResTot>1?"s":"");
       debug_("titre msg : " + title);
-      corps = "Si cet email ne s.affiche pas correctement, veuillez séctionner\nl.affichage HTML dans les paramèes de votre logiciel de messagerie.";
+      corps = "Si cet email ne s’affiche pas correctement, veuillez sélectionner\nl’affichage HTML dans les paramètres de votre logiciel de messagerie.";
       debug_("corps msg : " + corps);
       corpsHTML = "<body>" + corpsHTML + "</body>";
       debug_("corpsHTML msg : " + corpsHTML);
@@ -155,22 +155,22 @@ function setup(){
 
 function setupMail(){
   if(ScriptProperties.getProperty('email') == "" || ScriptProperties.getProperty('email') == null ){
-    var quest = Browser.inputBox("Entrez votre email, le programme ne véfie pas le contenu de cette boite.", Browser.Buttons.OK_CANCEL);
+    var quest = Browser.inputBox("Entrez votre email, le programme ne vérifie pas le contenu de cette boite.", Browser.Buttons.OK_CANCEL);
     if(quest == "cancel"){
-      Browser.msgBox("Ajout email annulé);
+      Browser.msgBox("Ajout email annulé.");
       return false;
     }else{
       ScriptProperties.setProperty('email', quest);
-      Browser.msgBox("Email " + ScriptProperties.getProperty('email') + " ajouté;
+      Browser.msgBox("Email " + ScriptProperties.getProperty('email') + " ajouté");
     }
   }else{
     var quest = Browser.inputBox("Entrez un email pour modifier l'email : " + ScriptProperties.getProperty('email') , Browser.Buttons.OK_CANCEL);
     if(quest == "cancel"){
-      Browser.msgBox("Modification email annulé);
+      Browser.msgBox("Modification email annulé.");
       return false;
     }else{
       ScriptProperties.setProperty('email', quest);
-      Browser.msgBox("Email " + ScriptProperties.getProperty('email') + " ajouté;
+      Browser.msgBox("Email " + ScriptProperties.getProperty('email') + " ajouté");
     }
   }
 }
@@ -219,7 +219,7 @@ return data.substring(data.indexOf("placement") + 11 , data.indexOf("</div>", da
 * Extrait le prix de l'annonce
 */
 function extractPrice_(data){
-// test àptimiser car c'est hyper bourrin [mlb]
+// test à optimiser car c'est hyper bourrin [mlb]
 data = data.substring(0,data.indexOf("clear",10)); //racourcissement de la longueur de data pour ne pas aller chercher le prix du proudit suivant
 var isPrice = String(data.substring(data.indexOf("price"), data.indexOf("price")+250)).match(/price/gi);
 if (isPrice) {
@@ -241,7 +241,7 @@ return data.substring(data.indexOf("date") + 6 , data.indexOf("class=\"image\"",
 * Extrait l'image de l'annonce
 */
 function extractImage_(data){
-// test àptimiser car c'est hyper bourrin [mlb]
+// test à optimiser car c'est hyper bourrin [mlb]
 var isImage = String(data.substring(data.indexOf("image"), data.indexOf("image")+250)).match(/img/gi);
 if (isImage) {
 var image = data.substring(data.indexOf("class=\"image-and-nb\">") + 21, data.indexOf("class=\"nb\"", data.indexOf("class=\"image-and-nb\">") + 21) - 12);
@@ -260,17 +260,17 @@ var fin = text.indexOf("<div class=\"list-gallery\">");
 return text.substring(debut + "<div class=\"list-lbc\">".length,fin);
 }
 
-//Activer/Déctiver les logs
+//Activer/Désactiver les logs
 function dolog(){
   if(ScriptProperties.getProperty('log') == "true"){
     ScriptProperties.setProperty('log', false);
-    Browser.msgBox("Les logs ont é déctivé.");
+    Browser.msgBox("Les logs ont été désactivées.");
   }else if(ScriptProperties.getProperty('log') == "false"){
     ScriptProperties.setProperty('log', true);
-    Browser.msgBox("Les logs ont é activé.");
+    Browser.msgBox("Les logs ont été activées.");
   }else{
     ScriptProperties.setProperty('log', false);
-    Browser.msgBox("Les logs ont é déctivé.");
+    Browser.msgBox("Les logs ont été désactivées.");
   }
 }
 
@@ -283,7 +283,7 @@ function archivelog(){
   slog.setName(newname);
   var newsheet = ss.insertSheet("Log",1);
   newsheet.getRange("A1").setValue("Recherche");
-  newsheet.getRange("B1").setValue("Nb Réltats");
+  newsheet.getRange("B1").setValue("Nb Résultats");
   newsheet.getRange("C1").setValue("Date");
   newsheet.getRange(1,1,2,3).setBorder(true,true,true,true,true,true);
 }
@@ -389,7 +389,26 @@ function test_home_ip(){
   else { return false; }
 }
 
-//inutile àirer
+function clear_home_ip_mails(){
+  var today = new Date();
+  var today_search = today.getFullYear()+"/"+(today.getMonth()+1)+"/"+today.getDate()
+
+  
+  var threads = GmailApp.search('is:unread subject:"ip" from:"ludovic.sterling@gmail.com" to:"ludovic.sterling@gmail.com" before:'+ today_search);
+   if ( threads.length > 0) {
+      var messages_todelete = [];
+      for (var i in threads){
+        var messages = threads[i].getMessages();
+        for(var j in messages){
+          messages_todelete.push(messages[j]);
+        }
+        GmailApp.moveMessagesToTrash(messages_todelete);
+      }     
+  }
+  Browser.msgBox("all cleared");
+}
+
+//inutile à virer
 function test_insert(){
       Browser.msgBox("no server");
       var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -427,3 +446,5 @@ function go_catchup(){
       Browser.msgBox("no server : " + ScriptProperties.getProperty('home_pub_ip') + " please try later");      
   }
 }
+
+

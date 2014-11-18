@@ -142,9 +142,6 @@ function goto_lbc(url, id_annonce){
     var page = new WebPage();
     var ville = "";
     var islocation = "";
-    if (url.indexOf("location") !=-1){
-	islocation = "location";
-    } 
 
     page.viewportSize = {
         width: 1280,
@@ -189,6 +186,20 @@ function goto_lbc(url, id_annonce){
             return $('div.floatLeft:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(2)').html();
         });
         console.log(ville);
+	if (url.indexOf("location") !=-1){
+		islocation = "location";
+	}
+/*	else {
+		var terrain = "";
+		terrain = page.evaluate(function() {
+			 return $('div.criterias:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(2)').html();
+		});
+		console.log("terrain = "+ terrain);
+		if ( terrain == "terrain" ) {
+			islocation = "terrain";
+		}
+	}*/
+
 
         var elem = page.evaluate( function() {
             // find element to send click to
