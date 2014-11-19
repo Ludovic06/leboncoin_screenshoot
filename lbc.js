@@ -79,8 +79,9 @@ function save_to_pic_and_exit(page, id_annonce, city, islocation){
 		path="/home/ludovic/lbc_sshoot/screenshooted_urls/"+city+"/";
 	}
 	else {
-		path="/home/ludovic/lbc_sshoot/screenshooted_urls/location/"+city+"/";
+		path="/home/ludovic/lbc_sshoot/screenshooted_urls/"+islocation+"/"+city+"/";
 	}
+	console.log("path = " + path); 
 	var fs = require('fs');
 	var wasSuccessful = fs.makeDirectory(path);
 	var now = new Date();
@@ -189,16 +190,25 @@ function goto_lbc(url, id_annonce){
 	if (url.indexOf("location") !=-1){
 		islocation = "location";
 	}
-/*	else {
-		var terrain = "";
+		var terrain = "plage";
 		terrain = page.evaluate(function() {
-			 return $('div.criterias:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(2)').html();
+		return $('.lbcParams.criterias > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2)').html();
+
 		});
 		console.log("terrain = "+ terrain);
-		if ( terrain == "terrain" ) {
-			islocation = "terrain";
+		if ( terrain != "Terrain" ) {
+		terrain = page.evaluate(function() {
+                return $('.lbcParams.criterias > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(2)').html();
+                });
+		console.log("terrain = "+ terrain);
+		if ( terrain == "Terrain") {
+		islocation = "Terrain";
 		}
-	}*/
+
+		}
+		else {
+		islocation = "Terrain";
+		}
 
 
         var elem = page.evaluate( function() {
