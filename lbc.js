@@ -60,7 +60,6 @@ function getref(url){
         var tempref=url.split("/");
         console.log("seloger_find_ref = " + tempref[tempref.length - 1].split(".")[0]);
         ref_ad = tempref[tempref.length - 1].split(".")[0];
-        //goto_other(url, ref_ad)
         goto_seloger(url,ref_ad);
     }
     else {
@@ -86,8 +85,6 @@ function save_to_pic_and_exit(page, id_annonce, city, islocation){
 	var wasSuccessful = fs.makeDirectory(path);
 	var now = new Date();
 	var today = now.getFullYear()+""+now.getMonth()+""+now.getDate();
-//    page.render("/home/ludovic/lbc_sshoot/screenshooted_urls/"+id_annonce +".png");
-//    page.render("/home/ludovic/lbc_sshoot/screenshooted_urls/"+id_annonce +".pdf");
 	page.render(path+id_annonce+"_"+today+".png");
 	page.render(path+id_annonce+"_"+today+".pdf");
     console.log("saved to file : " + id_annonce +"_"+today+ ".png");
@@ -230,7 +227,7 @@ function goto_lbc(url, id_annonce){
 
 	console.log("getting phone picture");
         // first click for phone number then wait for phone picture
-        page.sendEvent('click', offset.left , offset.top );
+//prevent lbc black list       page.sendEvent('click', offset.left , offset.top );
 
             waitFor({
                 debug: true,  // optional
@@ -242,7 +239,6 @@ function goto_lbc(url, id_annonce){
                             var phonenumberisvisible = false;
                             if($('.AdPhonenum')[0]) {
                                 phonenumberisvisible = true;
-//                                console.log($('.AdPhonenum')[0]);
                             }
                             return phonenumberisvisible ;
                         });
@@ -278,10 +274,7 @@ var system = require('system');
 var pageUrl = "http://www.leboncoin.fr/montres_bijoux/553822663.htm?ca=21_s";
 
 if (system.args.length === 2) {
-    //console.log('arg[1] = '+ system.args[1]);
     pageUrl = system.args[1];
-    //console.log('url = ' + pageUrl);
-    //phantom.exit();
 } else {
     console.log("Elle est ou l'url LBC ou seloger ???");
     phantom.exit();
@@ -292,9 +285,4 @@ if (system.args.length === 2) {
 }
 
 //init de la page
-
-
 getref(pageUrl);
-//console.log("ludo1");
-//console.log("id_annonce = " + id_annonce);
-
